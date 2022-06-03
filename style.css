@@ -2,3 +2,63 @@
     outline: solid 1px red;
 }
 
+#global-container {
+    display: flex;
+    width: 100%;
+    height: auto;
+    justify-content: center;
+}
+
+#calculator-container {
+    height: 400px;
+    width: 400px;
+    background-color: silver;
+    padding: 10px;
+}
+
+/*Display*/
+#display-container {
+    height: 30%;
+    color: white;
+    background-color: black;
+    padding: 10px;
+}
+
+#main-display {
+    height: 70%;
+    text-align: right;
+    font-size: 60px;
+    padding-top: 10px;
+}
+
+#secondary-display {
+    height: 30%;
+    text-align: right;
+    font-size: 24px;
+}
+
+/*Buttons*/
+#buttons-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) ;
+    gap: 5px;
+    padding: 5px;
+}
+
+.btn {
+    grid-column: auto;
+    height: 3rem;
+    font-size: 32px;
+    border: none;
+    border-radius: 0px;
+}
+
+.btn:hover {
+    background-color: aliceblue;
+}
+
+.btn:last-child {
+    grid-column: span 2;
+}
+
+
