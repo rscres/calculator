@@ -1,6 +1,6 @@
-* {
+/* * {
     outline: solid 1px red;
-}
+} */
 
 #global-container {
     display: flex;
@@ -10,7 +10,7 @@
 }
 
 #calculator-container {
-    height: 400px;
+    height: 430px;
     width: 350px;
     background-color: silver;
     padding: 10px;
@@ -22,6 +22,7 @@
     color: white;
     background-color: black;
     padding: 10px;
+    margin-bottom: 10px;
 }
 
 #main-display {
@@ -43,6 +44,7 @@
     grid-template-columns: repeat(4, 1fr) ;
     gap: 5px;
     padding: 5px;
+    margin-bottom: 5px;
 }
 
 .btn {
