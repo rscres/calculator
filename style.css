@@ -28,7 +28,8 @@
 #main-display {
     height: 70%;
     text-align: right;
-    font-size: 60px;
+    font-size: 400%;
+    overflow: visible;
     padding-top: 10px;
 }
 
