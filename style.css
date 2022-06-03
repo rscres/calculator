@@ -11,7 +11,7 @@
 
 #calculator-container {
     height: 400px;
-    width: 400px;
+    width: 350px;
     background-color: silver;
     padding: 10px;
 }
@@ -51,10 +51,12 @@
     font-size: 32px;
     border: none;
     border-radius: 0px;
+    transition: 100ms;
 }
 
 .btn:hover {
     background-color: aliceblue;
+    transform: scale(1.02);
 }
 
 .btn:last-child {
