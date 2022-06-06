@@ -24,16 +24,20 @@ function operate(operator, a, b) {
 const mainDisplay = document.querySelector('#main-display');
 const secondaryDisplay = document.querySelector('#secondary-display');
 let displayValues = '';
+let operators = [];
+let values = '';
+let tempValue = '';
 
 function equalBtn(e) {
     if (displayValues == '') return;
-    let operators = displayValues.split(' ');
+    operators = displayValues.split(' ');
     let valueA = parseFloat(operators[0]);
     let valueB = parseFloat(operators[2]);
-    if (operators[0] === null || valueA === null || valueB === NaN) return;
+    if (valueB === 0 && operators[1] == '/') return mainDisplay.textContent = "That doesn't work";
+    if (valueB != Number) valueB = valueA;
     secondaryDisplay.textContent = displayValues;
     displayValues = operate(operators[1], valueA, valueB);
-    mainDisplay.textContent = displayValues;
+    mainDisplay.textContent = Math.round(( displayValues + Number.EPSILON) * 100) / 100;
 };
 
 function clearBtn(e) {
@@ -44,6 +48,7 @@ function clearBtn(e) {
         secondaryDisplay.textContent  = displayValues;
     } else if (e.target.dataset.value === 'C') {
         displayValues = ''
+        console.log(operators)
         mainDisplay.textContent = displayValues;
     }
 }
@@ -52,16 +57,35 @@ const buttons = document.querySelector('#buttons-container');
 buttons.addEventListener('click', function(e) {
     const button = e.target;
     if (e.target.className === 'number btn') {
-        displayValues += button.dataset.value;
-        mainDisplay.textContent = displayValues;
+        tempValue += button.dataset.value;
+        mainDisplay.textContent = tempValue;
     }
     if (e.target.className === 'operand btn') {
-        if (displayValues == '') return;
-        displayValues += button.dataset.value;
-        mainDisplay.textContent = displayValues;
+        if (tempValue == '') return;
+        secondaryDisplay.textContent += tempValue + ' ' + button.dataset.value;
+        mainDisplay.textContent = '';
+        tempValue = '';
     }
     if(e.target.className === 'clear btn') return clearBtn(e);
     if(e.target.className === 'equal btn') return equalBtn(e);
     
 });
 
+/* const buttons = document.querySelector('#buttons-container');
+buttons.addEventListener('click', function(e) {
+    const button = e.target;
+    if (e.target.className === 'number btn') {
+        displayValues += button.dataset.value;
+        console.log(displayValues);
+        mainDisplay.textContent = displayValues;
+    }
+    if (e.target.className === 'operand btn') {
+        if (displayValues == '') return;
+        displayValues += button.dataset.value;
+        console.log(displayValues);
+        secondaryDisplay.textContent = displayValues;
+    }
+    if(e.target.className === 'clear btn') return clearBtn(e);
+    if(e.target.className === 'equal btn') return equalBtn(e);
+    
+}); */
