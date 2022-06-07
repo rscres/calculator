@@ -23,35 +23,58 @@ function operate(operator, a, b) {
 
 const mainDisplay = document.querySelector('#main-display');
 const secondaryDisplay = document.querySelector('#secondary-display');
-let displayValues = '';
 let operators = [];
 let values = '';
 let tempValue = '';
+let result = 0;
+let operations = [];
 
 function equalBtn(e) {
-    if (displayValues == '') return;
-    operators = displayValues.split(' ');
-    let valueA = parseFloat(operators[0]);
-    let valueB = parseFloat(operators[2]);
-    if (valueB === 0 && operators[1] == '/') return mainDisplay.textContent = "That doesn't work";
-    if (valueB != Number) valueB = valueA;
-    secondaryDisplay.textContent = displayValues;
-    displayValues = operate(operators[1], valueA, valueB);
-    mainDisplay.textContent = Math.round(( displayValues + Number.EPSILON) * 100) / 100;
+    secondaryDisplay.textContent += ' ' + tempValue;
+    operators[i] = tempValue;
+    console.log(operators);
+    tempValue = '';
+    for (j = 0; j < i - 1; j += 2) {
+        let valueA = parseFloat(operators[j]);
+        let valueB = parseFloat(operators[j + 2]);
+        console.log(valueA, valueB);
+        if (valueB === 0 && operators[1] == '/') return mainDisplay.textContent = "That doesn't work";
+        console.log(operate(operators[j + 1], valueA, valueB));
+        result = operate(operators[j + 1], valueA, valueB);  
+        operators[j + 2] = result;
+    };
+    console.log(result);
+    mainDisplay.textContent = Math.round(( result + Number.EPSILON) * 100) / 100;
+    console.log(mainDisplay.textContent);
 };
+
+/* for (j = 0; j <= i; j = j + 2) {
+    let valueA = parseFloat(operators[j]);
+    let valueB = parseFloat(operators[j + 1]);
+    if (valueB === 0 && operators[1] == '/') return mainDisplay.textContent = "That doesn't work";
+    result += operate(operators[1], valueA, valueB);    
+} */
 
 function clearBtn(e) {
     if (e.target.dataset.value === 'AC') {
-        operators = [];
-        displayValues = '';
-        mainDisplay.textContent = displayValues;
-        secondaryDisplay.textContent  = displayValues;
+        operators = operators.splice(0, operators.length);
+        tempValue = '';
+        result = '';
+        mainDisplay.textContent = tempValue;
+        secondaryDisplay.textContent  = tempValue;
     } else if (e.target.dataset.value === 'C') {
-        displayValues = ''
-        console.log(operators)
-        mainDisplay.textContent = displayValues;
+        tempValue = '';
+        mainDisplay.textContent = tempValue;
     }
 }
+
+function plusMinusBtn(e) {
+    if (tempValue == 0) return;
+    tempValue = tempValue * -1;
+    mainDisplay.textContent = tempValue;
+}
+
+let i = 0;
 
 const buttons = document.querySelector('#buttons-container');
 buttons.addEventListener('click', function(e) {
@@ -62,12 +85,17 @@ buttons.addEventListener('click', function(e) {
     }
     if (e.target.className === 'operand btn') {
         if (tempValue == '') return;
-        secondaryDisplay.textContent += tempValue + ' ' + button.dataset.value;
+        operators[i] = tempValue;
+        operators[i + 1] = button.dataset.value;
+        console.log(operators);
+        secondaryDisplay.textContent += ' ' + tempValue + ' ' + button.dataset.value;
         mainDisplay.textContent = '';
         tempValue = '';
+        i = i + 2;
     }
     if(e.target.className === 'clear btn') return clearBtn(e);
     if(e.target.className === 'equal btn') return equalBtn(e);
+    if(e.target.className === 'plus-minus btn') return plusMinusBtn(e);
     
 });
 
