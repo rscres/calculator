@@ -24,57 +24,22 @@ function operate(operator, a, b) {
 const mainDisplay = document.querySelector('#main-display');
 const secondaryDisplay = document.querySelector('#secondary-display');
 let operators = [];
-let values = '';
 let tempValue = '';
 let result = 0;
-let operations = [];
-
-function equalBtn(e) {
-    secondaryDisplay.textContent += ' ' + tempValue;
-    operators[i] = tempValue;
-    console.log(operators);
-    tempValue = '';
-    for (j = 0; j < i - 1; j += 2) {
-        let valueA = parseFloat(operators[j]);
-        let valueB = parseFloat(operators[j + 2]);
-        console.log(valueA, valueB);
-        if (valueB === 0 && operators[1] == '/') return mainDisplay.textContent = "That doesn't work";
-        console.log(operate(operators[j + 1], valueA, valueB));
-        result = operate(operators[j + 1], valueA, valueB);  
-        operators[j + 2] = result;
-    };
-    console.log(result);
-    mainDisplay.textContent = Math.round(( result + Number.EPSILON) * 100) / 100;
-    console.log(mainDisplay.textContent);
-};
-
-/* for (j = 0; j <= i; j = j + 2) {
-    let valueA = parseFloat(operators[j]);
-    let valueB = parseFloat(operators[j + 1]);
-    if (valueB === 0 && operators[1] == '/') return mainDisplay.textContent = "That doesn't work";
-    result += operate(operators[1], valueA, valueB);    
-} */
 
 function clearBtn(e) {
-    if (e.target.dataset.value === 'AC') {
-        operators = operators.splice(0, operators.length);
-        tempValue = '';
-        result = '';
-        mainDisplay.textContent = tempValue;
-        secondaryDisplay.textContent  = tempValue;
-    } else if (e.target.dataset.value === 'C') {
-        tempValue = '';
-        mainDisplay.textContent = tempValue;
-    }
-}
+    operators = []
+    tempValue = '';
+    result = '';
+    mainDisplay.textContent = tempValue;
+    secondaryDisplay.textContent  = tempValue;
+};
 
 function plusMinusBtn(e) {
     if (tempValue == 0) return;
-    tempValue = tempValue * -1;
+    tempValue *= -1;
     mainDisplay.textContent = tempValue;
-}
-
-let i = 0;
+};
 
 const buttons = document.querySelector('#buttons-container');
 buttons.addEventListener('click', function(e) {
@@ -83,37 +48,49 @@ buttons.addEventListener('click', function(e) {
         tempValue += button.dataset.value;
         mainDisplay.textContent = tempValue;
     }
-    if (e.target.className === 'operand btn') {
-        if (tempValue == '') return;
-        operators[i] = tempValue;
-        operators[i + 1] = button.dataset.value;
-        console.log(operators);
-        secondaryDisplay.textContent += ' ' + tempValue + ' ' + button.dataset.value;
-        mainDisplay.textContent = '';
-        tempValue = '';
-        i = i + 2;
-    }
+    if (e.target.className === 'operand btn') return operandBtn(e)
     if(e.target.className === 'clear btn') return clearBtn(e);
     if(e.target.className === 'equal btn') return equalBtn(e);
     if(e.target.className === 'plus-minus btn') return plusMinusBtn(e);
+    if(e.target.className === 'backspace btn') return backspaceBtn(e);
     
 });
 
-/* const buttons = document.querySelector('#buttons-container');
-buttons.addEventListener('click', function(e) {
+function equalBtn(e) {
+    secondaryDisplay.textContent += ' ' + tempValue;
+    operators[2] = tempValue;
+    let valueA = parseFloat(operators[0]);
+    let valueB = parseFloat(operators[2]);
+    if (valueB === 0 && operators[1] == '/') return mainDisplay.textContent = "That doesn't work";
+    result = operate(operators[1], valueA, valueB);  
+    mainDisplay.textContent = Math.round(( result + Number.EPSILON) * 100) / 100;
+    operators = [];
+    tempValue = ''; 
+    console.log(operators);
+};
+
+function operandBtn(e) {
     const button = e.target;
-    if (e.target.className === 'number btn') {
-        displayValues += button.dataset.value;
-        console.log(displayValues);
-        mainDisplay.textContent = displayValues;
+    if (tempValue == '') return;
+    if (operators.length == 0) {
+        operators[0] = tempValue;
+        operators[1] = button.dataset.value;
+        secondaryDisplay.textContent += ' ' + tempValue + ' ' + button.dataset.value;
+    } else {
+        let valueA = parseFloat(operators[0]);
+        let valueB = parseFloat(tempValue);
+        if (valueB === 0 && operand == '/') return mainDisplay.textContent = "That doesn't work";
+        result = operate(operators[1], valueA, valueB);
+        operators = [];
+        operators[0] = result;
+        operators[1] = button.dataset.value;
+        secondaryDisplay.textContent = Math.round(( result + Number.EPSILON) * 100) / 100 + ' ' + operators[1];   
     }
-    if (e.target.className === 'operand btn') {
-        if (displayValues == '') return;
-        displayValues += button.dataset.value;
-        console.log(displayValues);
-        secondaryDisplay.textContent = displayValues;
-    }
-    if(e.target.className === 'clear btn') return clearBtn(e);
-    if(e.target.className === 'equal btn') return equalBtn(e);
-    
-}); */
+    mainDisplay.textContent = '';
+    tempValue = '';
+};
+
+function backspaceBtn(e) {
+    tempValue = tempValue.slice(0, -1);
+    mainDisplay.textContent = tempValue;
+};
