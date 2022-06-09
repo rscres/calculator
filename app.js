@@ -1,3 +1,4 @@
+//Operation functions
 const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
@@ -56,6 +57,7 @@ buttons.addEventListener('click', function(e) {
     
 });
 
+//Equal button function
 function equalBtn(e) {
     if (tempValue == '') return;
     secondaryDisplay.textContent += ' ' + tempValue;
@@ -70,6 +72,7 @@ function equalBtn(e) {
     console.log(operators);
 };
 
+//Operand buttons function
 function operandBtn(e) {
     const button = e.target;
     if (tempValue == '') return;
