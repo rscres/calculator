@@ -57,6 +57,7 @@ buttons.addEventListener('click', function(e) {
 });
 
 function equalBtn(e) {
+    if (tempValue == '') return;
     secondaryDisplay.textContent += ' ' + tempValue;
     operators[2] = tempValue;
     let valueA = parseFloat(operators[0]);
@@ -75,7 +76,7 @@ function operandBtn(e) {
     if (operators.length == 0) {
         operators[0] = tempValue;
         operators[1] = button.dataset.value;
-        secondaryDisplay.textContent += ' ' + tempValue + ' ' + button.dataset.value;
+        secondaryDisplay.textContent = tempValue + ' ' + button.dataset.value;
     } else {
         let valueA = parseFloat(operators[0]);
         let valueB = parseFloat(tempValue);
