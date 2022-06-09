@@ -1,6 +1,10 @@
 /* * {
     outline: solid 1px red;
 } */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+body {
+    background-color: rgb(89, 110, 124);
+}
 
 #global-container {
     display: flex;
@@ -13,14 +17,16 @@
     height: 430px;
     width: 350px;
     background-color: silver;
+    outline: solid darkblue 2px;
     padding: 10px;
+    font-family: 'Orbitron', sans-serif;
 }
 
 /*Display*/
 #display-container {
     height: 30%;
-    color: white;
-    background-color: black;
+    color: rgb(30, 206, 30);
+    background-color: rgb(37, 37, 37);
     padding: 10px;
     margin-bottom: 10px;
 }
@@ -28,8 +34,7 @@
 #main-display {
     height: 70%;
     text-align: right;
-    font-size: 400%;
-    overflow: visible;
+    font-size: 350%;
     padding-top: 10px;
 }
 
@@ -49,6 +54,7 @@
 }
 
 .btn {
+    outline: solid darkblue 2px;
     grid-column: auto;
     height: 3rem;
     font-size: 32px;
