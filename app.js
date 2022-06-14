@@ -5,7 +5,11 @@ const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 
 function operate(operator, a, b) {
-    console.log(a, b, operator);
+    if (b === 0 && operator == '/') {
+        mainDisplay.style.fontSize = "220%";
+        mainDisplay.textContent = "That doesn't work";
+        return;
+    };
     switch (operator) {
         case '+':
             return add(a, b)
@@ -19,7 +23,7 @@ function operate(operator, a, b) {
         case '/':
             return divide(a, b)
             break;
-    }
+    };
 };
 
 const mainDisplay = document.querySelector('#main-display');
@@ -44,16 +48,18 @@ function plusMinusBtn(e) {
 
 const buttons = document.querySelector('#buttons-container');
 buttons.addEventListener('click', function(e) {
+    if (mainDisplay.style.fontSize !== "350%") mainDisplay.style.fontSize = '350%';
     const button = e.target;
     if (e.target.className === 'number btn') {
+        if (e.target.dataset.value === '.' && tempValue.includes('.') === true) return;
         tempValue += button.dataset.value;
         mainDisplay.textContent = tempValue;
     }
     if (e.target.className === 'operand btn') return operandBtn(e)
-    if(e.target.className === 'clear btn') return clearBtn(e);
-    if(e.target.className === 'equal btn') return equalBtn(e);
-    if(e.target.className === 'plus-minus btn') return plusMinusBtn(e);
-    if(e.target.className === 'backspace btn') return backspaceBtn(e);
+    if (e.target.className === 'clear btn') return clearBtn(e);
+    if (e.target.className === 'equal btn') return equalBtn(e);
+    if (e.target.className === 'plus-minus btn') return plusMinusBtn(e);
+    if (e.target.className === 'backspace btn') return backspaceBtn(e);
     
 });
 
@@ -64,12 +70,10 @@ function equalBtn(e) {
     operators[2] = tempValue;
     let valueA = parseFloat(operators[0]);
     let valueB = parseFloat(operators[2]);
-    if (valueB === 0 && operators[1] == '/') return mainDisplay.textContent = "That doesn't work";
     result = operate(operators[1], valueA, valueB);  
     mainDisplay.textContent = Math.round(( result + Number.EPSILON) * 100) / 100;
     operators = [];
     tempValue = ''; 
-    console.log(operators);
 };
 
 //Operand buttons function
@@ -83,7 +87,6 @@ function operandBtn(e) {
     } else {
         let valueA = parseFloat(operators[0]);
         let valueB = parseFloat(tempValue);
-        if (valueB === 0 && operand == '/') return mainDisplay.textContent = "That doesn't work";
         result = operate(operators[1], valueA, valueB);
         operators = [];
         operators[0] = result;
