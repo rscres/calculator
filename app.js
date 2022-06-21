@@ -1,27 +1,17 @@
-//Operation functions
-const add = (a, b) => a + b;
-const subtract = (a, b) => a - b;
-const multiply = (a, b) => a * b;
-const divide = (a, b) => a / b;
 
 function operate(operator, a, b) {
-    if (b === 0 && operator == '/') {
-        mainDisplay.style.fontSize = "220%";
-        mainDisplay.textContent = "That doesn't work";
-        return;
-    };
     switch (operator) {
         case '+':
-            return add(a, b)
+            return a + b
             break;
         case '-':
-            return subtract(a, b)
+            return a - b
             break;
         case '*':
-            return multiply(a, b)
+            return a * b
             break;
         case '/':
-            return divide(a, b)
+            return a / b
             break;
     };
 };
@@ -55,7 +45,7 @@ buttons.addEventListener('click', function(e) {
         tempValue += button.dataset.value;
         mainDisplay.textContent = tempValue;
     }
-    if (e.target.className === 'operand btn') return operandBtn(e)
+    if (e.target.className === 'operand btn') return operatorBtn(e);
     if (e.target.className === 'clear btn') return clearBtn(e);
     if (e.target.className === 'equal btn') return equalBtn(e);
     if (e.target.className === 'plus-minus btn') return plusMinusBtn(e);
@@ -71,15 +61,24 @@ function equalBtn(e) {
     let valueA = parseFloat(operators[0]);
     let valueB = parseFloat(operators[2]);
     result = operate(operators[1], valueA, valueB);  
-    mainDisplay.textContent = Math.round(( result + Number.EPSILON) * 100) / 100;
+    if (result === Infinity) {
+        mainDisplay.style.fontSize = "200%";
+        mainDisplay.textContent = "That doesn't work";
+        return;
+    } else {
+        mainDisplay.textContent = Math.round(( result + Number.EPSILON) * 100) / 100;
+    };
     operators = [];
     tempValue = ''; 
 };
 
-//Operand buttons function
-function operandBtn(e) {
+//Operator buttons function
+function operatorBtn(e) {
     const button = e.target;
-    if (tempValue == '') return;
+    if (tempValue === '') {
+        if (mainDisplay.textContent !== '') tempValue = mainDisplay.textContent; //returns last value as first number, if empty
+        else return;
+    }
     if (operators.length == 0) {
         operators[0] = tempValue;
         operators[1] = button.dataset.value;
@@ -91,7 +90,14 @@ function operandBtn(e) {
         operators = [];
         operators[0] = result;
         operators[1] = button.dataset.value;
-        secondaryDisplay.textContent = Math.round(( result + Number.EPSILON) * 100) / 100 + ' ' + operators[1];   
+        if (result === Infinity) { //checks if it was divided by zero
+            mainDisplay.style.fontSize = "200%";
+            mainDisplay.textContent = "That doesn't work";
+            secondaryDisplay.textContent += ' ' + 0;
+            return;
+        } else {
+            secondaryDisplay.textContent = Math.round(( result + Number.EPSILON) * 100) / 100 + ' ' + operators[1];
+        };   
     }
     mainDisplay.textContent = '';
     tempValue = '';
